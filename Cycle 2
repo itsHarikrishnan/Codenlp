@@ -1,0 +1,109 @@
+Below is the Python code to solve questions 6, 7, 8, and 9 using the nltk library.
+
+Code:
+
+import nltk
+from nltk.corpus import wordnet, stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk import pos_tag
+from collections import Counter
+import string
+
+# Ensure necessary NLTK resources are downloaded
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+
+# Text to process
+text = """Your sample text goes here. Replace this with the text you want to analyze."""
+
+# Function for Question 6: Replace words with synonyms and negations with antonyms
+def replace_with_synonyms_and_antonyms(text):
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+    
+    result = []
+    for word in tokens:
+        synonyms = wordnet.synsets(word)
+        antonyms = []
+        
+        # Get synonyms
+        if synonyms:
+            lemma = synonyms[0].lemmas()[0].name()
+            result.append(lemma if lemma != word else word)
+        else:
+            result.append(word)
+        
+        # Replace negations with antonyms
+        if word.lower() in ["not", "no", "never"]:
+            if synonyms:
+                antonyms = synonyms[0].lemmas()[0].antonyms()
+                if antonyms:
+                    result[-1] = antonyms[0].name()
+    
+    return ' '.join(result)
+
+# Function for Question 7: Create a word list corpus
+def create_word_list_corpus(text):
+    tokens = word_tokenize(text.lower())
+    tokens = [word for word in tokens if word.isalnum()]
+    return list(set(tokens))
+
+# Function for Question 8: POS-tagged corpus with tokenizing, filtering, lemmatizing
+def create_pos_tagged_corpus(text):
+    tokens = word_tokenize(text.lower())
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word.isalnum() and word not in stop_words]
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(word) for word in tokens]
+    return pos_tag(lemmatized_tokens)
+
+# Function for Question 9: Counting vocabulary
+def count_vocabulary(text, specific_word):
+    tokens = word_tokenize(text.lower())
+    tokens = [word for word in tokens if word.isalnum()]
+    total_tokens = len(tokens)
+    unique_words = len(set(tokens))
+    word_count = tokens.count(specific_word.lower())
+    percentage = (word_count / total_tokens) * 100 if total_tokens > 0 else 0
+    return {
+        "total_tokens": total_tokens,
+        "unique_words": unique_words,
+        "specific_word_count": word_count,
+        "percentage": percentage,
+    }
+
+# Run the functions
+# Question 6
+replaced_text = replace_with_synonyms_and_antonyms(text)
+print("Text after replacing synonyms and antonyms:\n", replaced_text)
+
+# Question 7
+word_list_corpus = create_word_list_corpus(text)
+print("\nWord list corpus:\n", word_list_corpus)
+
+# Question 8
+pos_tagged_corpus = create_pos_tagged_corpus(text)
+print("\nPOS-tagged corpus:\n", pos_tagged_corpus)
+
+# Question 9
+specific_word = "the"  # Replace with the word you want to analyze
+vocab_stats = count_vocabulary(text, specific_word)
+print("\nVocabulary statistics:\n", vocab_stats)
+
+Instructions:
+
+1. Replace the text variable with your desired text or file content.
+
+
+2. Specify the word to analyze in specific_word for question 9.
+
+
+3. Run the code in an environment with the nltk library installed (e.g., Jupyter Notebook or Python IDE).
+
+
+
+Let me know if you need help executing this!
+
