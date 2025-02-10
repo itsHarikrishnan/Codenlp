@@ -1,0 +1,32 @@
+from collections import Counter
+import string
+
+def text_analysis(text, target_word):
+    # Remove punctuation and convert to lowercase
+    text = text.translate(str.maketrans('', '', string.punctuation)).lower()
+    
+    # Tokenize by splitting on whitespace
+    tokens = text.split()
+    
+    # Count total tokens
+    total_tokens = len(tokens)
+    
+    # Count unique words
+    unique_words = len(set(tokens))
+    
+    # Count occurrences of the target word
+    word_count = tokens.count(target_word.lower())
+    
+    # Calculate percentage representation
+    word_percentage = (word_count / total_tokens) * 100 if total_tokens > 0 else 0
+    
+    # Display results
+    print(f"Total tokens: {total_tokens}")
+    print(f"Unique words: {unique_words}")
+    print(f"Occurrences of '{target_word}': {word_count}")
+    print(f"Percentage of text: {word_percentage:.2f}%")
+
+# Example usage
+sample_text = "The quick brown fox jumps over the lazy dog. The fox is quick."
+target_word = "the"
+text_analysis(sample_text, target_word)
